@@ -81,8 +81,10 @@ export default function RestaurantListings({
 			setRestaurants(data);
 		}, filters);
 
+		if(unsubscribe)
+
 		return () => {
-			// unsubscribe();
+			unsubscribe();
 		};
 	}, [filters]);
 
