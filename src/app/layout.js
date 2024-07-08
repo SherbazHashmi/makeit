@@ -1,4 +1,4 @@
-import "@/src/app/styles.css";
+import "@/src/app/styles.scss";
 import Header from "@/src/components/Header.jsx";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp";
 // Force next.js to treat this route as server-side rendered
@@ -6,9 +6,9 @@ import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "FriendlyEats",
+  title: "MakeIt",
   description:
-    "FriendlyEats is a restaurant review website built with Next.js and Firebase.",
+    "Make It is a booking application",
 };
 
 
@@ -16,9 +16,8 @@ export default async function RootLayout({ children }) {
   const { currentUser } = await getAuthenticatedAppForUser();
   return (
     <html lang="en">
-
       <body>
-      <Header initialUser={currentUser?.toJSON()} />
+      {/* <Header initialUser={currentUser?.toJSON()} /> */}
         <main>{children}</main>
       </body>
 

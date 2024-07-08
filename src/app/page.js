@@ -13,11 +13,21 @@ export const dynamic = "force-dynamic";
 export default async function Home({ searchParams }) {
 	// Using seachParams which Next.js provides, allows the filtering to happen on the server-side, for example:
 	// ?city=London&category=Indian&sort=Review
-	const {firebaseServerApp} = await getAuthenticatedAppForUser();
+	const { firebaseServerApp } = await getAuthenticatedAppForUser();
 	const slots = await getRestaurants(getFirestore(firebaseServerApp), searchParams);
 	return (
 		<main className="main__home">
-			
+			<div class="home_content">
+				<ul>
+					<li>
+						<div class="player-slot">
+							<input type="checkbox" />
+							<span>Free Slot</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+
 		</main>
 	);
 }
