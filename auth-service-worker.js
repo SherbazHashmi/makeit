@@ -1,4 +1,4 @@
-import { initializeServerApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getAuth, getIdToken } from "firebase/auth";
 import { getInstallations, getToken } from "firebase/installations";
 
@@ -25,13 +25,8 @@ self.addEventListener("fetch", (event) => {
 
 async function fetchWithFirebaseHeaders(request) {
   const idToken = headers().get("Authorization")?.split("Bearer ")[1];
-  const app = initializeServerApp(
-    firebaseConfig,
-    idToken
-      ? {
-          authIdToken: idToken,
-        }
-      : {}
+  const app = initializeApp(
+    firebaseConfig
   );
   const auth = getAuth(app);
   const installations = getInstallations(app);
