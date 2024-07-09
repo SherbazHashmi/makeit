@@ -25,7 +25,6 @@ self.addEventListener("fetch", (event) => {
 });
 
 async function fetchWithFirebaseHeaders(request) {
-  const idToken = headers().get("Authorization")?.split("Bearer ")[1];
   const app = initializeApp(
     firebaseConfig
   );
