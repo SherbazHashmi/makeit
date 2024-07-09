@@ -1,16 +1,21 @@
-import { getAuthenticatedAppForUser, getAuthenticatedAppForUser as getUser } from "@/src/lib/firebase/serverApp.js";
+"use client";
 import MapView from "@/src/components/MapView";
 import Profile from "@/src/components/People/Profile";
+import { useDisclosure } from '@mantine/hooks';
+import { Modal, Button } from '@mantine/core';
 
-export default async function Event({ params }) {
+export default function Event({ params }) {
   // This is a server component, we can access URL
   // parameters via Next.js and download the data
   // we need for this page
-  const { currentUser } = await getUser();
-  const { firebaseServerApp } = await getAuthenticatedAppForUser();
+ 
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <main className="main_event">
+      <Modal opened={opened} onClose={close} title="Your Details">
+
+      </Modal>
       <div className="main_event-map">
         {/* Add Google Login Here */}
         <MapView />
@@ -35,20 +40,16 @@ export default async function Event({ params }) {
               </div>
             </div>
           </div>
-          <div className="court-row">
-
-          </div>
-
           <div className="slot-row">
 
             <div className="slot-section">
               <h2 className="item med-text secondary-color">
                 Court 1
               </h2>
-              <Profile name="Sherbaz" home="Beclonnen"/>
-              <Profile name="Grace" home="Belconnen"/>
-              <Profile name="Natalia" home="Turner"/>
-              <Profile name="Anne" home="Turner"/>
+              <Profile name="Sherbaz" home="Beclonnen" />
+              <Profile name="Grace" home="Belconnen" />
+              <Profile name="Natalia" home="Turner" />
+              <Profile name="Anne" home="Turner" />
 
             </div>
           </div>
@@ -57,10 +58,8 @@ export default async function Event({ params }) {
 
 
         <div className="join-row">
-          <button className="join-btn"> Join </button>
+          <Button className="join-btn" onClick={open}> Join </Button>
         </div>
-
-
       </div>
     </main>
   );
