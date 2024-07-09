@@ -2,7 +2,8 @@
 import MapView from "@/src/components/MapView";
 import Profile from "@/src/components/People/Profile";
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button } from '@mantine/core';
+import { Modal, Button, TextInput, Center} from '@mantine/core';
+import Term from "@/src/components/Form/Term";
 
 export default function Event({ params }) {
   // This is a server component, we can access URL
@@ -14,7 +15,11 @@ export default function Event({ params }) {
   return (
     <main className="main_event">
       <Modal opened={opened} onClose={close} title="Your Details">
-
+        <TextInput label="Your Name" mb={7}></TextInput>
+        <Term title="$5 Payment" description="You agree to transfer the organiser $5 for booking the court today."></Term>
+        <Center mt={10}>
+          <Button title="Sign Up" onClick={close}> Sign Up </Button>
+        </Center>
       </Modal>
       <div className="main_event-map">
         {/* Add Google Login Here */}
