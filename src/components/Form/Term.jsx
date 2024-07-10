@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UnstyledButton, Checkbox, Text } from '@mantine/core';
 import classes from './Term.module.css';
 
-export default function Term({title, description}) {
-  const [value, onChange] = useState(true);
+export default function Term({title, description, valueRef}) {
+  const [value, onChange] = useState(false);
 
+  useEffect(() => {
+    valueRef.current = value;
+  }, [value])
   return (
     <UnstyledButton onClick={() => onChange(!value)} className={classes.button}>
       <Checkbox

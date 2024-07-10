@@ -4,6 +4,7 @@ import Profile from "@/src/components/People/Profile";
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, TextInput, Center} from '@mantine/core';
 import Term from "@/src/components/Form/Term";
+import { useRef } from "react";
 
 export default function Event({ params }) {
   // This is a server component, we can access URL
@@ -11,12 +12,12 @@ export default function Event({ params }) {
   // we need for this page
  
   const [opened, { open, close }] = useDisclosure(false);
-
+  const paymentTermValue = useRef(false);
   return (
     <main className="main_event">
       <Modal opened={opened} onClose={close} title="Your Details">
         <TextInput label="Your Name" mb={7}></TextInput>
-        <Term title="$5 Payment" description="You agree to transfer the organiser $5 for booking the court today."></Term>
+        <Term title="$5 Payment" description="You agree to transfer the organiser $5 for booking the court today." valueRef={paymentTermValue}></Term>
         <Center mt={10}>
           <Button title="Sign Up" onClick={close}> Sign Up </Button>
         </Center>
