@@ -1,8 +1,8 @@
 "use client"
 import React from 'react'
 import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps'
-import { Circle, CircleF } from '@react-google-maps/api';
-function MapView() {
+function MapView({latitude, longitude}) {
+  console.log({latitude, longitude})
   const mapOptions = {
     zoomControl: false,
     mapTypeControl: false, // Disables map type control
@@ -34,17 +34,17 @@ function MapView() {
     
   };
   return (
+    latitude && longitude &&
     <div className='map'>
       <APIProvider apiKey="AIzaSyBhZDlwF2kS94gabvenhlRTolWeEFK7W2I">
         <Map
-          // controlled={true}
           options={mapOptions} // Pass the options here
           className='map'
-          defaultCenter={{ lat: -35.267532183121624, lng: 149.123024010753 }}
+          defaultCenter={{ lat: latitude, lng: longitude }}
           defaultZoom={18}
         >
           <Marker
-    position={{ lat: -35.267532183121624, lng: 149.123024010753 }}
+    position={{ lat: latitude, lng: longitude }}
     label={{ text: "Turner Tennis Club", color: "white" }}
     // icon={{
     //   path: CircleF,
