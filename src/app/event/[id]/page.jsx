@@ -5,7 +5,6 @@ import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, TextInput, Center, Text } from '@mantine/core';
 import Term from "@/src/components/Form/Term";
 import { useEffect, useRef, useState } from "react";
-// import { getEventById } from "@/src/app/services/EventService";
 import * as fb from "@/src/lib/firebase/clientApp";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import moment from "moment";
@@ -35,10 +34,22 @@ export default function Event({ params }) {
   const [userInformation, setUserInformation] = useState({ name: '', homeClub: '', assignedCourtIndex: 0 });
 
   const handleClick = async () => {
+    const totalCapacity = eventData.courts.reduce((acc, court) => acc + court.capacity, 0);
     if (userInformation.firstName === '' || userInformation.homeClub === '') {
-      alert("please complete form");
+      alert("Please complete form");
       return;
     }
+
+    if (paymentTermValue.current === false) {
+      alert("Cannot proceed without payment agreement");
+      return;
+    }
+
+    if (eventData.attendees.length === totalCapacity) {
+      alert("No more spots available");
+      return;
+    }
+
     try {
       await addMember({ originalStructure: eventData, documentPath: params.id, newAttendee: userInformation });
     } catch (e) {
@@ -70,7 +81,7 @@ export default function Event({ params }) {
         <TextInput label="First Name" mb={7} onChange={onChangeUserField.bind(this, 'firstName')}></TextInput>
         <TextInput label="Home Club" mb={7} onChange={onChangeUserField.bind(this, 'homeClub')} defaultValue={""}></TextInput>
         <Text mb={7}>Payment</Text>
-        <Term title="$5 Payment" description="You agree to transfer the organiser $5 for booking the court today." valueRef={paymentTermValue}></Term>
+        <Term title="$5 Payment" description={`You agree to transfer ${eventData?.organiser} $5 for booking the court`} valueRef={paymentTermValue}></Term>
         <Center mt={10}>
           <Button title="Sign Up" onClick={handleClick}> Sign Up </Button>
         </Center>
@@ -102,11 +113,11 @@ export default function Event({ params }) {
           </div>
           <div className="slot-row">
             <div className="slot-section">
+              <h2 className="item med-text secondary-color">
+                Players ({eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'All Slots Taken' : 'Space Available'})
+              </h2>
               {eventData?.courts.map((court, courtIndex) => {
                 return (<>
-                  <h2 className="item med-text secondary-color">
-                    {court.courtName}
-                  </h2>
                   {eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === courtIndex).map(p => <Profile name={p.name} home={p.homeClub} />)}
                 </>)
               })}
@@ -127,7 +138,7 @@ export default function Event({ params }) {
 };
 
 const addMember = async ({ originalStructure, documentPath, newAttendee }) => {
-  const document = await setDoc(doc(fb.db, "events", documentPath), {...originalStructure, attendees: [...originalStructure.attendees, newAttendee]});
+  const document = await setDoc(doc(fb.db, "events", documentPath), { ...originalStructure, attendees: [...originalStructure.attendees, newAttendee] });
   debugger;
   console.log(document);
 }
