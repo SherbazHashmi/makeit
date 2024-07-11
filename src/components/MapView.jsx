@@ -2,7 +2,6 @@
 import React from 'react'
 import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps'
 function MapView({latitude, longitude}) {
-  console.log({latitude, longitude})
   const mapOptions = {
     zoomControl: false,
     mapTypeControl: false, // Disables map type control
