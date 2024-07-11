@@ -2,11 +2,12 @@
 import MapView from "@/src/components/MapView";
 import Profile from "@/src/components/People/Profile";
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, TextInput, Center, Text } from '@mantine/core';
+import { Modal, Button, TextInput, Center, Text, Carousel } from '@mantine/core';
 import Term from "@/src/components/Form/Term";
 import { useEffect, useRef, useState } from "react";
 import * as fb from "@/src/lib/firebase/clientApp";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import { redirect } from 'next/navigation'
 import moment from "moment";
 import { Skeleton } from '@mantine/core';
 export default function Event({ params }) {
@@ -21,10 +22,12 @@ export default function Event({ params }) {
   // Retrieve the event information
   useEffect(() => {
     onSnapshot(doc(fb.db, "events", params.id), (doc) => {
-      try {
+
+      const data = doc.data();
+      if (data === undefined) {
+        throw Error('Unable to fetch court information');
+      } else {
         setEventData(doc.data());
-      } catch (e) {
-        console.error(e);
       }
     })
   }, []);
