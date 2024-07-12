@@ -25,6 +25,9 @@ self.addEventListener("fetch", (event) => {
 });
 
 async function fetchWithFirebaseHeaders(request) {
+  if(!firebaseConfig) {
+    return await fetch(request);
+  }
   const app = initializeApp(
     firebaseConfig
   );
