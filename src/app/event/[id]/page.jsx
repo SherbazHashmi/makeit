@@ -25,7 +25,6 @@ export default function Event({ params }) {
   // Retrieve the event information
   useEffect(() => {
     onSnapshot(doc(fb.db, "events", params.id), (doc) => {
-
       const data = doc.data();
       if (data === undefined) {
         throw Error('Unable to fetch court information');
@@ -41,6 +40,8 @@ export default function Event({ params }) {
 
   const handleClick = async () => {
     const totalCapacity = eventData.courts.reduce((acc, court) => acc + court.capacity, 0);
+    const courtCapacities = eventData?.courts.map(({courtName, capacity}, idx) => ({currentAllocation: eventData?.attendees.filter(p => p.assignedCourtIndex === idx).length, courtName, capacity, courtIndex: idx}));
+    const assignedCourtIndex = courtCapacities.reduce((acc, {capacity, currentAllocation, courtIndex}) => acc !== null ? acc : currentAllocation < capacity ? courtIndex : null, null);
     if (userInformation.firstName === '' || userInformation.homeClub === '') {
       alert("Please complete form");
       return;
@@ -57,7 +58,7 @@ export default function Event({ params }) {
     }
 
     try {
-      await addMember({ originalStructure: eventData, documentPath: params.id, newAttendee: userInformation });
+      await addMember({ originalStructure: eventData, documentPath: params.id, newAttendee: {...userInformation, assignedCourtIndex} });
     } catch (e) {
       console.error(e);
     }
