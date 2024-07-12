@@ -39,9 +39,9 @@ export default function Event({ params }) {
   const [userInformation, setUserInformation] = useState({ name: '', homeClub: '', assignedCourtIndex: 0 });
 
   const handleClick = async () => {
-    const totalCapacity = eventData.courts.reduce((acc, court) => acc + court.capacity, 0);
-    const courtCapacities = eventData?.courts.map(({courtName, capacity}, idx) => ({currentAllocation: eventData?.attendees.filter(p => p.assignedCourtIndex === idx).length, courtName, capacity, courtIndex: idx}));
-    const assignedCourtIndex = courtCapacities.reduce((acc, {capacity, currentAllocation, courtIndex}) => acc !== null ? acc : currentAllocation < capacity ? courtIndex : null, null);
+    const totalCapacity = eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0);
+    const courtCapacities = eventData?.courts.map(({ courtName, capacity }, idx) => ({ currentAllocation: eventData?.attendees.filter(p => p.assignedCourtIndex === idx).length, courtName, capacity, courtIndex: idx }));
+    const assignedCourtIndex = courtCapacities.reduce((acc, { capacity, currentAllocation, courtIndex }) => acc !== null ? acc : currentAllocation < capacity ? courtIndex : null, null);
     if (userInformation.firstName === '' || userInformation.homeClub === '') {
       alert("Please complete form");
       return;
@@ -58,7 +58,7 @@ export default function Event({ params }) {
     }
 
     try {
-      await addMember({ originalStructure: eventData, documentPath: params.id, newAttendee: {...userInformation, assignedCourtIndex} });
+      await addMember({ originalStructure: eventData, documentPath: params.id, newAttendee: { ...userInformation, assignedCourtIndex } });
     } catch (e) {
       console.error(e);
     }
@@ -88,7 +88,7 @@ export default function Event({ params }) {
         <TextInput label="First Name" mb={7} onChange={onChangeUserField.bind(this, 'firstName')}></TextInput>
         <TextInput label="Home Club" mb={7} onChange={onChangeUserField.bind(this, 'homeClub')} defaultValue={""}></TextInput>
         <Text mb={7}>Payment</Text>
-        <Term title="$5 Payment" description={`You agree to transfer ${eventData?.organiser} $5 for booking the court`} valueRef={paymentTermValue}></Term>
+        <Term title="$5 Payment" description={`You agree to transfer the host (${eventData?.organiser}) a $5 booking fee`} valueRef={paymentTermValue}></Term>
         <Center mt={10}>
           <Button title="Sign Up" onClick={handleClick}> Sign Up </Button>
         </Center>
@@ -112,8 +112,11 @@ export default function Event({ params }) {
                 <div className="event-content-subtitle">
                   {eventData?.eventDate && <Text> {moment(eventData?.eventDate.toDate()).format('MMMM Do YYYY, h:mm:ss a')}</Text>}
                 </div>
-                <div className="event-content-subtitle secondary-color sm-txt">
-                  {eventData?.location?.clubName}
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <Text c="blue.6" size="xs" fw={'bold'}>{eventData?.location?.clubName}</Text>               
+                  <Text c="red.6" size="xs" fw={'bold'} display={eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'block' : 'none'}>At Capacity</Text>
+                  <Text c="yellow.6" size="xs" fw={'bold'} display={eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'none' : 'block'}>Space available</Text>
+
                 </div>
               </div>
             </div>
@@ -122,11 +125,11 @@ export default function Event({ params }) {
             {eventData?.courts.filter((_, idx) => idx === currentCourtIdx).map((court, courtIndex) => {
               return (
                 <div className="slot-section">
-                  <h2 className="item med-text secondary-color">
+                  <Text c="blue.7" fw="bold">
                     {court.courtName}
-                  </h2>
+                  </Text>
                   {eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).map(p => <Profile name={p.name} home={p.homeClub} />)}
-                  {new Array(4 - eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).length).fill('').map(_ => <Profile name={"Available"} home={"Could be you"} assigned={false}/>)}
+                  {new Array(4 - eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).length).fill('').map(_ => <Profile name={"Available"} home={"Could be you"} assigned={false} />)}
                 </div>)
             })}
           </div>
@@ -136,11 +139,8 @@ export default function Event({ params }) {
           </div>
 
         </div>
-
-
-
         <div className="join-row">
-          <Button className="join-btn" onClick={open}> Join </Button>
+          <Button className="join-btn" onClick={open} disabled={eventData?.attendees.length === eventData?.courts.reduce((acc, court) => acc + court.capacity, 0)}> Join </Button>
         </div>
       </div >
     </main >

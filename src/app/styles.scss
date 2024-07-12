@@ -183,12 +183,12 @@ button {
 	display: flex;
 	justify-content: center;
 	margin-top: 5px;
-	flex-direction: column;
+	flex-direction: row;
 }
 
 .join-row {
-	justify-content: center;
-	align-items: center;
+	width: 100%;
+	align-items: end;
 }
 
 .med-text {
