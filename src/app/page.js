@@ -1,7 +1,6 @@
-import { getRestaurants } from "@/src/lib/firebase/firestore.js";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp.js";
-import { getFirestore } from "firebase/firestore";
-
+import { Text, Image, Container, Center } from "@mantine/core";
+import { IconBallTennis } from "@tabler/icons-react";
 // Force next.js to treat this route as server-side rendered
 // Without this line, during the build process, next.js will treat this route as static and build a static HTML file for it
 
@@ -16,16 +15,10 @@ export default async function Home({ searchParams }) {
 	const { firebaseServerApp } = await getAuthenticatedAppForUser();
 	return (
 		<main className="main__home">
-			<div class="home_content">
-				<ul>
-					<li>
-						<div class="player-slot">
-							<input type="checkbox" />
-							<span>Free Slot</span>
-						</div>
-					</li>
-				</ul>
-			</div>
+			<Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+				<IconBallTennis size={60}/>
+				<Text>Please open an event link to continue</Text>
+			</Container>
 
 		</main>
 	);
