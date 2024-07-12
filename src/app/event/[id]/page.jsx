@@ -82,9 +82,9 @@ export default function Event({ params }) {
   return (
     <main className="main_event">
       <Modal opened={opened} onClose={close} title="Your Details">
-        <TextInput label="First Name" mb={7} onChange={onChangeUserField.bind(this, 'firstName')}></TextInput>
-        <TextInput label="Home Club" mb={7} onChange={onChangeUserField.bind(this, 'homeClub')} defaultValue={""}></TextInput>
-        <Text mb={7}>Payment</Text>
+        <TextInput label="First Name" size="md" mb={7} onChange={onChangeUserField.bind(this, 'firstName')}></TextInput>
+        <TextInput label="Home Club" size="md" mb={7} onChange={onChangeUserField.bind(this, 'homeClub')} defaultValue={""}></TextInput>
+        <Text mb={7} size="md">Payment</Text>
         <Term title="$5 Payment" description={`You agree to transfer the host (${eventData?.organiser}) a $5 booking fee`} valueRef={paymentTermValue}></Term>
         <Center mt={10}>
           <Button title="Sign Up" onClick={handleClick}> Sign Up </Button>
@@ -111,8 +111,8 @@ export default function Event({ params }) {
                 </div>
                 <div style={{display: 'flex', justifyContent: 'space-between',}}>
                   <Text c="blue.6" size="xs" fw={'bold'}>{eventData?.location?.clubName}</Text>               
-                  <Text c="red.6" size="xs" fw={'bold'} display={eventData && eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'block' : 'none'}>At Capacity</Text>
-                  <Text c="yellow.6" size="xs" fw={'bold'} display={eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'none' : 'block'}>Space available</Text>
+                  <Text c="red.6" ml={5} size="xs" fw={'bold'} display={eventData && eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'block' : 'none'}>At Capacity</Text>
+                  <Text c="yellow.6" ml={5} size="xs" fw={'bold'} display={eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'none' : 'block'}>Space available</Text>
 
                 </div>
               </div>
