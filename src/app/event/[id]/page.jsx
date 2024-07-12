@@ -3,15 +3,12 @@ import MapView from "@/src/components/MapView";
 import Profile from "@/src/components/People/Profile";
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, TextInput, Center, Text } from '@mantine/core';
-import { Carousel } from '@mantine/carousel';
 import Term from "@/src/components/Form/Term";
 import { useEffect, useRef, useState } from "react";
 import * as fb from "@/src/lib/firebase/clientApp";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
-import { redirect } from 'next/navigation'
 import moment from "moment";
 import { Skeleton } from '@mantine/core';
-import classes from './event.module.css';
 export default function Event({ params }) {
   // This is a server component, we can access URL
   // parameters via Next.js and download the data
@@ -107,14 +104,14 @@ export default function Event({ params }) {
               <div className="title-text">
                 <div className="event-content-title">
                   <Skeleton height={8} mt={6} radius="xl" visible={!eventData} />
-                  {eventData?.name ?? ''}
+                  <Text size="xl">{eventData?.name ?? ''}</Text>
                 </div>
                 <div className="event-content-subtitle">
-                  {eventData?.eventDate && <Text> {moment(eventData?.eventDate.toDate()).format('MMMM Do YYYY, h:mm:ss a')}</Text>}
+                  {eventData?.eventDate && <Text size="sm"> {moment(eventData?.eventDate.toDate()).format('MMMM Do YYYY, h:mm:ss a')}</Text>}
                 </div>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div style={{display: 'flex', justifyContent: 'space-between',}}>
                   <Text c="blue.6" size="xs" fw={'bold'}>{eventData?.location?.clubName}</Text>               
-                  <Text c="red.6" size="xs" fw={'bold'} display={eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'block' : 'none'}>At Capacity</Text>
+                  <Text c="red.6" size="xs" fw={'bold'} display={eventData && eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'block' : 'none'}>At Capacity</Text>
                   <Text c="yellow.6" size="xs" fw={'bold'} display={eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'none' : 'block'}>Space available</Text>
 
                 </div>
