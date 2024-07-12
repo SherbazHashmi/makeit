@@ -2,7 +2,8 @@
 import MapView from "@/src/components/MapView";
 import Profile from "@/src/components/People/Profile";
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, TextInput, Center, Text, Carousel } from '@mantine/core';
+import { Modal, Button, TextInput, Center, Text } from '@mantine/core';
+import { Carousel } from '@mantine/carousel';
 import Term from "@/src/components/Form/Term";
 import { useEffect, useRef, useState } from "react";
 import * as fb from "@/src/lib/firebase/clientApp";
@@ -10,6 +11,7 @@ import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { redirect } from 'next/navigation'
 import moment from "moment";
 import { Skeleton } from '@mantine/core';
+import classes from './event.module.css';
 export default function Event({ params }) {
   // This is a server component, we can access URL
   // parameters via Next.js and download the data
@@ -18,6 +20,7 @@ export default function Event({ params }) {
   console.log(params)
 
   const [eventData, setEventData] = useState(null);
+  const [currentCourtIdx, setCurrentCourtIdx] = useState(0);
 
   // Retrieve the event information
   useEffect(() => {
@@ -115,17 +118,22 @@ export default function Event({ params }) {
             </div>
           </div>
           <div className="slot-row">
-            <div className="slot-section">
-              <h2 className="item med-text secondary-color">
-                Players ({eventData?.attendees?.length === eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0) ? 'All Slots Taken' : 'Space Available'})
-              </h2>
-              {eventData?.courts.map((court, courtIndex) => {
-                return (<>
-                  {eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === courtIndex).map(p => <Profile name={p.name} home={p.homeClub} />)}
-                </>)
-              })}
-            </div>
+            {eventData?.courts.filter((_, idx) => idx === currentCourtIdx).map((court, courtIndex) => {
+              return (
+                <div className="slot-section">
+                  <h2 className="item med-text secondary-color">
+                    {court.courtName}
+                  </h2>
+                  {eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).map(p => <Profile name={p.name} home={p.homeClub} />)}
+                  {new Array(4 - eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).length).fill('').map(_ => <Profile name={"Available"} home={"Could be you"} assigned={false}/>)}
+                </div>)
+            })}
           </div>
+          <div className="button_container">
+            <Button onClick={() => setCurrentCourtIdx(currentCourtIdx - 1)} display={currentCourtIdx === 0 ? "none" : "block"} size="xs" mr={5}>{"Back"}</Button>
+            <Button onClick={() => setCurrentCourtIdx(currentCourtIdx + 1)} display={eventData?.courts?.length > 0 && currentCourtIdx < eventData?.courts?.length - 1 ? "block" : "none"} size="xs"> {"Next"} </Button>
+          </div>
+
         </div>
 
 
@@ -133,8 +141,8 @@ export default function Event({ params }) {
         <div className="join-row">
           <Button className="join-btn" onClick={open}> Join </Button>
         </div>
-      </div>
-    </main>
+      </div >
+    </main >
   );
 
 

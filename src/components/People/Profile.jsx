@@ -22,7 +22,7 @@ import Image17 from "../../../public/profile/17.webp";
 // import Image18 from "../../../public/profile/18.webp";
 // import Image19 from "../../../public/profile/19.webp";
 // import Image20 from "../../../public/profile/20.webp";
-
+import Head from "../../../public/profile/head.webp";
 const images = [
   Image0, Image1, Image2,
   Image3, Image4, Image5,
@@ -32,13 +32,13 @@ const images = [
   Image15, Image16, Image17
 ]
   
-const Profile = ({ name = "", home=""}) => {
+const Profile = ({ name = "", home="", assigned=true}) => {
   const profileImageIndex = useRef(Math.floor(Math.random() * images.length));
   return (
     <div className="item profile">
       <div className="profile_left">
         <Image
-          src={images[profileImageIndex.current]}
+          src={assigned ? images[profileImageIndex.current] : Head}
           width={40}
           height={40}
           style={{ borderRadius: 50 }}
