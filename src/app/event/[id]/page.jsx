@@ -128,8 +128,8 @@ export default function Event({ params }) {
                   <Text c="blue.7" fw="bold">
                     {court.courtName}
                   </Text>
-                  {eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).map(p => <Profile name={p.name} home={p.homeClub} />)}
-                  {new Array(4 - eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).length).fill('').map(_ => <Profile name={"Available"} home={"Could be you"} assigned={false} />)}
+                  {eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).map(p => <Profile name={p.name} home={p.homeClub} key={p.name}/>)}
+                  {new Array(4 - eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).length).fill('').map((_, idx) => <Profile name={"Available"} home={"Could be you"} assigned={false} key={`profile-${idx}`}/>)}
                 </div>)
             })}
           </div>
