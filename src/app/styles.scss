@@ -10,8 +10,8 @@ body,
 main,
 .main_home {
 	font-family: "Roboto", ui-sans-serif, system-ui, -apple-system;
-	height: 100vh;
 	background-color: #1E1E1E;
+	height: 100vh;
 }
 
 ul {
@@ -52,8 +52,7 @@ h2 {
 	/* grid-template-rows: repeat(3, 1fr); */
 	grid-column-gap: 0px;
 	grid-row-gap: 0px;
-	margin-left: 5%;
-	margin-right: 5%;
+	padding: 0 20px;
 }
 
 .title-row, .court-row {
@@ -213,6 +212,7 @@ button {
 	}
 	.main_event-content-wrapper {
 		width: 400px;
+		background: #1E1E1E;
 	}
 	.event-content-title {
 		font-size: 22px;
@@ -223,3 +223,29 @@ button {
 	}
 
 }
+
+/* Compact Phone */
+
+@media screen and (max-height: 800px) {
+	.main_event {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 25vh 35vh;
+		grid-column-gap: 0px;
+		grid-row-gap: 0px;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.main_event-content {
+		padding: 0;
+	}
+	.button_container button {
+		margin-right: 50px;
+	}
+}
+
+/* For dark mode */
+:root[data-mantine-color-scheme="dark"] {
+	--mantine-color-body: #1E1E1E !important;
+  }

@@ -40,7 +40,7 @@ function MapView({latitude, longitude}) {
           options={mapOptions} // Pass the options here
           className='map'
           defaultCenter={{ lat: latitude, lng: longitude }}
-          defaultZoom={18}
+          defaultZoom={16}
         >
           <Marker
     position={{ lat: latitude, lng: longitude }}

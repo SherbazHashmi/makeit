@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import Image0 from "../../../public/profile/0.webp";
 import Image1 from "../../../public/profile/1.webp";
@@ -28,19 +28,21 @@ const images = [
   Image3, Image4, Image5,
   Image6, Image7, Image8,
   Image9, Image10, Image11,
-  Image12, Image13, Image14, 
+  Image12, Image13, Image14,
   Image15, Image16, Image17
 ]
-  
-const Profile = ({ name = "", home="", assigned=true}) => {
-  const profileImageIndex = useRef(Math.floor(Math.random() * images.length));
+
+const Profile = ({ name = "", home = "", assigned = true, chooseImage, profileIndex }) => {
+  useEffect(() => {
+    chooseImage({ profileIndex, imagePath: Math.floor(Math.random() * images.length) });
+  }, []);
   return (
     <div className="item profile">
       <div className="profile_left">
         <Image
-          src={assigned ? images[profileImageIndex.current] : Head}
-          width={40}
-          height={40}
+          src={assigned ? images[profileIndex] : Head}
+          width={60}
+          height={60}
           style={{ borderRadius: 50 }}
           alt="Avatar for the person"
         />
