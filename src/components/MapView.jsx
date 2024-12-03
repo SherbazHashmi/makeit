@@ -35,7 +35,7 @@ function MapView({latitude, longitude}) {
   return (
     latitude && longitude &&
     <div className='map'>
-      <APIProvider apiKey="AIzaSyBhZDlwF2kS94gabvenhlRTolWeEFK7W2I">
+      <APIProvider apiKey="AIzaSyBT2XDN6pNoVMNc50mBtbxcJMHj3QKiNS8">
         <Map
           options={mapOptions} // Pass the options here
           className='map'
