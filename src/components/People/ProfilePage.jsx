@@ -16,7 +16,7 @@ function ProfilePage({ eventData }) {
                                 {court.courtName}
                             </Text>
                             {eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).map((p, pIdx) => <Profile name={p.name} home={p.homeClub} chooseImage={chooseImage} key={(currentCourtIdx * 4) + pIdx} profileIndex={(currentCourtIdx * 4) + pIdx} imagePath={imageIndex[(currentCourtIdx * 4) + pIdx]}/>)}
-                            {new Array(4 - eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).length).fill('').map((_, idx) => <Profile name={"Available"} home={"Could be you"} assigned={false} key={`profile-${idx}`} chooseImage={chooseImage}/>)}
+                            {new Array(eventData?.courts[currentCourtIdx].capacity - eventData?.attendees.filter(allCourtPeople => allCourtPeople.assignedCourtIndex === currentCourtIdx).length).fill('').map((_, idx) => <Profile name={"Available"} home={"Could be you"} assigned={false} key={`profile-${idx}`} chooseImage={chooseImage}/>)}
                         </div>)
                 })}
             </div>
