@@ -82,7 +82,7 @@ export default function Event({ params }) {
   return (
     <main className="main_event">
       <Modal opened={opened} onClose={close} title="Your Details">
-        <DetailsForm handleClick={handleClick} paymentTermValue={paymentTermValue} onChangeUserField={onChangeUserField} cost={5} organiser={eventData?.organiser}/>
+        <DetailsForm handleClick={handleClick} paymentTermValue={paymentTermValue} onChangeUserField={onChangeUserField} cost={eventData?.bookingCost} organiser={eventData?.organiser}/>
       </Modal>
       <div className="main_event-map">
         {/* Add Google Login Here */}
