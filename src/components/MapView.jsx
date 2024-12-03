@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps'
-function MapView({latitude, longitude}) {
+function MapView({latitude, longitude, locationLabel }) {
   const mapOptions = {
     zoomControl: false,
     mapTypeControl: false, // Disables map type control
@@ -43,16 +43,9 @@ function MapView({latitude, longitude}) {
           defaultZoom={16}
         >
           <Marker
-    position={{ lat: latitude, lng: longitude }}
-    label={{ text: "Turner Tennis Club", color: "white" }}
-    // icon={{
-    //   path: CircleF,
-    //   scale: 10,
-    //   fillColor: 'white',
-    //   fillOpacity: 1,
-    //   strokeWeight: 0,
-    // }}
-          />
+            position={{ lat: latitude, lng: longitude }}
+            label={{ text: locationLabel, color: "white" }}
+           />
         </Map>
       </APIProvider>
     </div>

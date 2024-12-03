@@ -86,7 +86,7 @@ export default function Event({ params }) {
       </Modal>
       <div className="main_event-map">
         {/* Add Google Login Here */}
-        <MapView latitude={eventData?.location?.coordinates?.latitude} longitude={eventData?.location?.coordinates?.longitude} />
+        <MapView latitude={eventData?.location?.coordinates?.latitude} longitude={eventData?.location?.coordinates?.longitude} locationLabel={eventData?.location?.clubName ?? 'Location'} />
       </div>
       <div className="main_event-content">
         <div className="main_event-content-wrapper">
