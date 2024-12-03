@@ -9,7 +9,7 @@ const DetailsForm = ({organiser, cost, onChangeUserField, paymentTermValue, hand
             {
                 cost !== 0 && (
                     <>
-                     <Text mb={7} size="md">Payment</Text>
+                     <Text mb={7} size="md">Payment (Non Club Members Only)</Text>
                      <Term title={`$${cost} Payment`} description={`You agree to transfer the host (${organiser}) a $${cost} booking fee`} valueRef={paymentTermValue}></Term>
                     </>
                 )
