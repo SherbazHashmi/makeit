@@ -18,7 +18,7 @@ export default function Event({ params }) {
   console.log(params)
 
   const [eventData, setEventData] = useState(null);
-
+  const paymentTermValue = useRef(false);
   // Retrieve the event information
   useEffect(() => {
     onSnapshot(doc(fb.db, "events", params.id), (doc) => {
@@ -32,8 +32,7 @@ export default function Event({ params }) {
   }, []);
 
   const [opened, { open, close }] = useDisclosure(false);
-  const paymentTermValue = useRef(false);
-  const [userInformation, setUserInformation] = useState({ name: '', homeClub: '', assignedCourtIndex: 0 });
+  const [userInformation, setUserInformation] = useState({ name: '', homeClub: '', assignedCourtIndex: 0, isMember: true});
 
   const handleClick = async () => {
     const totalCapacity = eventData?.courts?.reduce((acc, court) => acc + court.capacity, 0);
@@ -43,9 +42,8 @@ export default function Event({ params }) {
       alert("Please complete form");
       return;
     }
-
-    if (paymentTermValue.current === false) {
-      alert("Cannot proceed without payment agreement");
+    if (paymentTermValue.current === false && !userInformation.isMember) {
+      alert("Cannot proceed without payment agreement or becoming a member");
       return;
     }
 
@@ -79,10 +77,17 @@ export default function Event({ params }) {
     }
   }
 
+  const updateUserField = (field, value) => {
+    setUserInformation({
+      ...userInformation,
+      [field]: value,
+    });
+  } 
+
   return (
     <main className="main_event">
       <Modal opened={opened} onClose={close} title="Your Details">
-        <DetailsForm handleClick={handleClick} paymentTermValue={paymentTermValue} onChangeUserField={onChangeUserField} cost={eventData?.bookingCost} organiser={eventData?.organiser}/>
+        <DetailsForm handleClick={handleClick} paymentTermValue={paymentTermValue} onChangeUserField={onChangeUserField} cost={eventData?.bookingCost} organiser={eventData?.organiser} clubName={eventData?.location?.clubName} updateUserField={updateUserField} isMember={userInformation.isMember} paymentDetails={eventData?.paymentDetails}/>
       </Modal>
       <div className="main_event-map">
         {/* Add Google Login Here */}
